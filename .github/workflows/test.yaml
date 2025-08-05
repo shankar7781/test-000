@@ -1,0 +1,11 @@
+name: test-release
+on:
+  release:
+    types: [published]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print event
+        run: echo $GITHUB_EVENT_NAME
