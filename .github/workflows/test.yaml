@@ -2,6 +2,12 @@ name: test-release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - develop
+
 
 jobs:
   test:
