@@ -1,0 +1,34 @@
+# based on https://github.com/thomaseizinger/github-action-gitflow-release-workflow/blob/dev/.github/workflows/publish-new-release.yml
+name: "Publish new release"
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  release:
+    name: Publish new release
+    runs-on: ubuntu-latest
+    # only merged pull requests that begin with 'release/' must trigger this job
+    if: github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+
+    steps:
+      - name: Extract version from branch name (for release branches)
+        if: startsWith(github.event.pull_request.head.ref, 'release/')
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#release/}
+
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Create Release
+        run: gh release create ${{ env.RELEASE_VERSION }} --generate-notes --latest --target main 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
