@@ -31,4 +31,4 @@ jobs:
       - name: Create Release
         run: gh release create ${{ env.RELEASE_VERSION }} --generate-notes --latest --target main 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
