@@ -3,7 +3,10 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-
+  push:
+    branches:
+      - develop
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
